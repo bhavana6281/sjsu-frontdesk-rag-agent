@@ -35,3 +35,8 @@ sjsu-it-agent/output/
 
 # Personal gcloud credentials (should never be in a repo anyway)
 application_default_credentials.json
+
+# Handoff docs (Drive only — contain SJSU-specific resource IDs)
+HANDOFF.md
+SETUP.md
+DEPLOY.md
