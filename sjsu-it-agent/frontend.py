@@ -1,4 +1,5 @@
 """SJSU IT Service Desk - Front Desk Knowledge Assistant"""
+import os
 import json
 from pathlib import Path
 import streamlit as st
@@ -38,7 +39,9 @@ def render_sources(sources):
             if uri.startswith("gs://"):
                 page_id = uri.split("/")[-1].replace(".json", "")
                 pretty = PAGE_TITLES.get(page_id) or fallback_title.replace(".json", "")
-                wiki_url = f"https://sjsu-its.atlassian.net/wiki/spaces/SDKB/pages/{page_id}"
+                wiki_base = os.environ.get("DOMAIN_URL", "")
+                wiki_space = os.environ.get("SPACE_KEY", "")
+                wiki_url = f"{wiki_base}/wiki/spaces/{wiki_space}/pages/{page_id}"
                 st.markdown(f"📄 **{pretty}** — [Open in Confluence ↗]({wiki_url})")
             else:
                 st.markdown(f"📄 **{fallback_title}**")

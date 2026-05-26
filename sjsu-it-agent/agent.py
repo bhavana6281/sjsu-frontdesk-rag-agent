@@ -12,7 +12,7 @@ import vertexai
 
 load_dotenv()
 
-PROJECT_ID = os.getenv("PROJECT_ID", "sjsu-it-genai-poc")
+PROJECT_ID = os.getenv("PROJECT_ID", "")
 LOCATION = os.getenv("LOCATION", "us-west1")
 RAG_CORPUS_ID = os.getenv("RAG_CORPUS_ID")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")

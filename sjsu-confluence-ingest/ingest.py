@@ -31,11 +31,11 @@ from sheet_sync import pull_sheet_entries
 # ============ Configuration ============
 load_dotenv()
 
-PROJECT_ID = os.getenv("PROJECT_ID", "sjsu-it-genai-poc")
+PROJECT_ID = os.getenv("PROJECT_ID", "")
 LOCATION = os.getenv("LOCATION", "us-west1")
 INTEGRATION_NAME = os.getenv("INTEGRATION_NAME", "SG_Confluence_Test")
 TRIGGER_ID = os.getenv("TRIGGER_ID", "api_trigger/SG_Confluence_Test_API_1")
-DOMAIN_URL = os.getenv("DOMAIN_URL", "https://sjsu-its.atlassian.net")
+DOMAIN_URL = os.getenv("DOMAIN_URL", "")
 SPACE_KEY = os.getenv("SPACE_KEY", "SDKB")
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "./output"))
 GCS_BUCKET = os.getenv("GCS_BUCKET", "")
@@ -292,7 +292,7 @@ def refresh_rag_corpus() -> None:
     """
     import time
     corpus_id = os.getenv("RAG_CORPUS_ID", "").strip()
-    project_id = os.getenv("PROJECT_ID", "sjsu-it-genai-poc")
+    project_id = os.getenv("PROJECT_ID", "")
     location = os.getenv("LOCATION", "us-west1")
 
     if not corpus_id:

@@ -9,7 +9,7 @@ a service account with the Sheets read scope.
 Required setup steps before this works in production:
 
   1. Create or reuse a service account, e.g.:
-     confluence-ingest@sjsu-it-genai-poc.iam.gserviceaccount.com
+     <service-account>@<your-gcp-project>.iam.gserviceaccount.com
 
   2. Share the target Google Sheet with that service account email as VIEWER
      (no Editor needed -- this code only reads).
