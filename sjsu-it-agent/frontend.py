@@ -17,7 +17,12 @@ from agent import answer
 @st.cache_resource
 def load_page_titles():
     titles = {}
-    output_dir = Path.home() / "sjsu-confluence-ingest" / "output"
+    # Look for ingestion output in repo-relative location first, fall back to old standalone layout
+    candidates = [
+        Path(__file__).parent.parent / "sjsu-confluence-ingest" / "output",
+        Path.home() / "sjsu-confluence-ingest" / "output",
+    ]
+    output_dir = next((p for p in candidates if p.exists()), candidates[0])
     if output_dir.exists():
         for f in output_dir.glob("*.json"):
             try:
