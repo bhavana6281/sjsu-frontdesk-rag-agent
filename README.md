@@ -31,20 +31,20 @@ answers in real time without waiting on the weekly admin Confluence cycle.
 ## Architecture
 
 Two pipelines:
-INGESTION (runs daily)
+```INGESTION (runs daily)
 Confluence SDKB ─┐
 ├─► ingest.py ─► GCS bucket ─► Vertex AI RAG corpus
 Google Sheet ────┘
 QUERY (per user question)
 Streamlit UI ─► agent.py ─► Vertex RAG retrieval ─► Gemini 2.5 Flash
 ▲                                                    │
-└──────── cited answer streamed back ◄───────────────┘
+└──────── cited answer streamed back ◄───────────────┘```
 **Tech stack:** Python · Streamlit · Vertex AI RAG Engine · Gemini 2.5 Flash · Google Cloud Storage · Application Integration · Google Sheets API · Cloud Run (intended deployment target).
 
 ---
 
 ## Repo structure
-sjsu-frontdesk-rag-agent/
+```sjsu-frontdesk-rag-agent/
 ├── README.md                    ← you are here
 ├── .gitignore                   ← what NOT to commit
 ├── .env.example                 ← template for environment variables
@@ -59,7 +59,7 @@ sjsu-frontdesk-rag-agent/
 ├── agent.py                 ←   RAG agent + Gemini wrapper
 ├── frontend.py              ←   Streamlit UI
 ├── requirements.txt         ←   pinned dependencies
-└── (.env, venv/             ← local-only, gitignored)
+└── (.env, venv/             ← local-only, gitignored)```
 ---
 
 ## Quick start (local development)
@@ -74,12 +74,12 @@ cd sjsu-frontdesk-rag-agent
 # 2. Configure environment for ingestion
 cd sjsu-confluence-ingest
 cp ../.env.example .env
-# Edit .env with your values (see HANDOFF.md for reference values)
+# Edit .env with your values
 
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
-# 3. Run ingestion (one-time, populates RAG corpus)
+# 3. Run ingestion
 python ingest.py
 # Or with mock Sheet data:
 SHEET_TEST_MODE=true python ingest.py
@@ -87,8 +87,6 @@ SHEET_TEST_MODE=true python ingest.py
 # 4. Configure & run agent (in a new terminal)
 cd ../sjsu-it-agent
 cp ../.env.example .env
-# Edit .env (same values minus Sheet vars)
-
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 streamlit run frontend.py
