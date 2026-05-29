@@ -44,10 +44,19 @@ def render_sources(sources):
             if uri.startswith("gs://"):
                 page_id = uri.split("/")[-1].replace(".json", "")
                 pretty = PAGE_TITLES.get(page_id) or fallback_title.replace(".json", "")
-                wiki_base = os.environ.get("DOMAIN_URL", "")
-                wiki_space = os.environ.get("SPACE_KEY", "")
-                wiki_url = f"{wiki_base}/wiki/spaces/{wiki_space}/pages/{page_id}"
-                st.markdown(f"📄 **{pretty}** — [Open in Confluence ↗]({wiki_url})")
+                if page_id.startswith("sheet-"):
+                    # Sheet entries are lead-maintained Q&A overrides, not wiki pages
+                    sheet_id = os.environ.get("SHEET_ID", "")
+                    if sheet_id:
+                        sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/edit"
+                        st.markdown(f"📋 **{pretty}** — [Front Desk Q&A Sheet ↗]({sheet_url})")
+                    else:
+                        st.markdown(f"📋 **{pretty}** — Front Desk Q&A (Sheet)")
+                else:
+                    wiki_base = os.environ.get("DOMAIN_URL", "")
+                    wiki_space = os.environ.get("SPACE_KEY", "")
+                    wiki_url = f"{wiki_base}/wiki/spaces/{wiki_space}/pages/{page_id}"
+                    st.markdown(f"📄 **{pretty}** — [Open in Confluence ↗]({wiki_url})")
             else:
                 st.markdown(f"📄 **{fallback_title}**")
 

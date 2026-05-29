@@ -23,9 +23,6 @@ Required setup steps before this works in production:
      reason this code may not run from a personal-account ADC if your Google
      Workspace admin restricts third-party OAuth scopes.
 
-For local testing without API access, set SHEET_TEST_MODE=true to use a
-hard-coded mock row instead of hitting the Sheets API.
-
 READ-ONLY: This module only reads. There is no write path. The agent has no
 mechanism to modify the Sheet -- only humans editing via the Google Sheets UI.
 
@@ -107,24 +104,6 @@ def pull_sheet_entries(sheet_id: str, range_name: str = "Sheet1!A:E") -> Iterato
     Uses Application Default Credentials -- locally that is the developer's
     Google account; in Cloud Run it would be a service account.
     """
-    # === Local test mode (SHEET_TEST_MODE=true) ===
-    # TODO(handoff): Remove this block once production has real Sheets API access.
-    # Exists so the pipeline can be tested end-to-end without depending on the
-    # OAuth scope authorization that Google Workspace admin policy may block.
-    import os as _os
-    if _os.getenv("SHEET_TEST_MODE", "").lower() == "true":
-        logger.info("SHEET_TEST_MODE=true -- yielding mock entry instead of calling API")
-        yield SheetEntry(
-            entry_id=_make_entry_id("Where is the front desk located?"),
-            category="Location",
-            question="Where is the front desk located?",
-            answer="The IT front desk is at **Diaz Compean Student Union 1300**, "
-                   "open Mon-Fri 8am-5pm.",
-            last_updated="2026-05-22",
-            updated_by="Saibhavana A. (mock)",
-        )
-        return
-
     try:
         creds, _ = google.auth.default(scopes=SCOPES)
         service = build("sheets", "v4", credentials=creds, cache_discovery=False)
